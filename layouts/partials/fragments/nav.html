@@ -139,9 +139,9 @@
     {{- $page_scratch.Set "crumb_tmp" $.page -}}
   {{- else if ge $index 1 -}}
     {{- $directory := (delimit (first (add $index 1) $sections) "/") -}}
-    {{- $page_scratch.Set "crumb_tmp" ($.root.Site.GetPage "page" (print $directory)) -}}
+    {{- $page_scratch.Set "crumb_tmp" ($.root.Site.GetPage "page" (print (strings.TrimPrefix "/" $directory))) -}}
   {{- else -}}
-    {{- $page_scratch.Set "crumb_tmp" ($.root.Site.GetPage "section" (print $directory)) -}}
+    {{- $page_scratch.Set "crumb_tmp" ($.root.Site.GetPage "section" (print (strings.TrimPrefix "/" $directory))) -}}
   {{- end -}}
   {{- if ($page_scratch.Get "crumb_tmp") -}}
     {{- $page_scratch.Add "crumbs" ($page_scratch.Get "crumb_tmp") -}}
@@ -151,7 +151,7 @@
   * Render the breadcrumb
   */}}
 {{- if and $display_breadcrumb (lt $level (len ($page_scratch.Get "crumbs"))) }}
-  <nav aria-label="breadcrumb" class="overlay navbar navbar-expand-lg pt-2
+  <nav aria-label="breadcrumb" class="overlay navbar breadcrumb-container navbar-expand-lg pt-2
     {{- printf " bg-%s" $nav_bg -}}
     {{- if or (eq $bg "light") (eq $bg "white") (eq $bg "secondary") -}}
       {{- printf " navbar-%s" "light" -}}
